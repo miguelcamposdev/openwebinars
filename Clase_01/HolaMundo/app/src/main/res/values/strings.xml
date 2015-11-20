@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HolaMundo</string>
+    <string name="label_nombre">Escriba su nombre</string>
+    <string name="btn_mostrar_nombre">Cómo me llamo</string>
+</resources>
