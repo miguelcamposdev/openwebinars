@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/imageViewTipo"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:src="@drawable/ic_like"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="María"
+        android:id="@+id/textViewNombrePersona"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageViewTipo"
+        android:layout_toEndOf="@+id/imageViewTipo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="27 años"
+        android:id="@+id/textViewEdad"
+        android:layout_below="@+id/textViewNombrePersona"
+        android:layout_toRightOf="@+id/imageViewTipo"
+        android:layout_toEndOf="@+id/imageViewTipo" />
+
+    <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/imageView"
+    android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_arrow"/>
+</RelativeLayout>
