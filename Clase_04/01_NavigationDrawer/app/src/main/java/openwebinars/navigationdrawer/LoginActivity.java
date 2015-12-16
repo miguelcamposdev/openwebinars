@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -26,8 +28,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText nick;
+    EditText nickEditText, passEditText;
     Button btn;
+    RadioGroup sexoRadio;
+    String sexoSeleccionado = "mujer";
 
     //SENDER_ID servidor api Friender: 813103604059
 
@@ -35,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = this.getSharedPreferences("NuevasPreferencias", Context.MODE_PRIVATE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
 
         // Si el usuario ya está registrado obvio el formulario de Login
         if(prefs.getBoolean("recordar",false)) {
@@ -44,14 +48,20 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             setContentView(R.layout.activity_login);
 
-            nick = (EditText) findViewById(R.id.editTextNickname);
+            nickEditText = (EditText) findViewById(R.id.editTextNickname);
+            passEditText = (EditText) findViewById(R.id.editTextPass);
+            sexoRadio = (RadioGroup) findViewById(R.id.sexoOption);
 
             btn = (Button) findViewById(R.id.buttonEntrar);
+
 
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new GcmRegistrationAsyncTask(LoginActivity.this).execute(nick.getText().toString());
+                    if(sexoRadio.getCheckedRadioButtonId()==R.id.radio_hombre) {
+                        sexoSeleccionado = "hombre";
+                    }
+                    new GcmRegistrationAsyncTask(LoginActivity.this).execute(nickEditText.getText().toString(), passEditText.getText().toString(), sexoSeleccionado);
                 }
             });
 
@@ -65,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         private String registrationID = "";
         JSONArray response = new JSONArray();
         String nick;
+        String pass;
+        String sexo;
 
         private static final String SENDER_ID = "813103604059";
 
@@ -81,7 +93,10 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             String msg = "";
-            String nick = params[0];
+            nick = params[0];
+            pass = params[1];
+            sexo = params[2];
+
             try {
                 if (gcm == null){
                     gcm = GoogleCloudMessaging.getInstance(context);
@@ -109,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
 
             try {
-                url = new URL("http://rest.miguelcr.com/friender/register?regId=" + registrationID + "&nickname=" + nick + "&password=1234");
+                url = new URL("http://rest.miguelcr.com/friender/register?regId=" + registrationID + "&nickname=" + nick + "&password="+pass + "&sexo=" + sexo);
                 Log.i("registro", url.toString());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -156,14 +171,15 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String msg) {
-            SharedPreferences prefs = context.getSharedPreferences("NuevasPreferencias", Context.MODE_PRIVATE);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
             SharedPreferences.Editor editor = prefs.edit();
             // boolean
             editor.putBoolean("recordar", true);
             editor.putString("nick", nick);
+            editor.putString("ID", registrationID);
             editor.commit();
 
-            Toast.makeText(LoginActivity.this, "Registro concluido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Bienvenido a Friender", Toast.LENGTH_SHORT).show();
 
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);

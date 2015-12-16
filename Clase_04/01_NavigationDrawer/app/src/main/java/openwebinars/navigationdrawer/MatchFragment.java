@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import openwebinars.navigationdrawer.adapters.AdaptadorPersona;
+
 
 /**
  * A simple {@link Fragment} subclass.

@@ -30,6 +30,32 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextPass"
+        android:layout_below="@+id/editTextNickname"
+        android:hint="Password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sexoOption"
+        android:layout_below="@+id/editTextPass"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/radio_hombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hombre"/>
+        <RadioButton android:id="@+id/radio_mujer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mujer"/>
+    </RadioGroup>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +63,8 @@
         android:background="@color/colorPrimaryDark"
         android:textColor="@android:color/white"
         android:id="@+id/buttonEntrar"
-        android:layout_below="@+id/editTextNickname"
+        android:layout_below="@+id/sexoOption"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true" />
 
     <TextView

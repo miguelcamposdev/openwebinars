@@ -1,10 +1,14 @@
 package openwebinars.navigationdrawer;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -64,8 +68,17 @@ public class MainActivity extends AppCompatActivity
         TextView textPrincipal = (TextView) viewHeader.findViewById(R.id.tituloPrincipal);
         TextView textSecundario = (TextView) viewHeader.findViewById(R.id.tituloSecundario);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+        String nick = prefs.getString("nick", "");
+
         textPrincipal.setText("Bienvenido a Friender");
-        textSecundario.setText("Miguel Campos");
+        textSecundario.setText(nick);
+
+        // Cargo el Fragment inicial
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.contenedor, new CardsFragment());
+        tx.commit();
 
     }
 
@@ -126,7 +139,18 @@ public class MainActivity extends AppCompatActivity
             mensaje = "Configuración";
         } else if (id == R.id.nav_exit) {
             // Salir de la aplicación
-            mensaje = "Salir";
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            SharedPreferences.Editor editor = prefs.edit();
+            // boolean
+            editor.putBoolean("recordar", false);
+            editor.putString("nick", null);
+            editor.commit();
+            this.finish();
+
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+
         }
 
         if(lanzarFragment) {
